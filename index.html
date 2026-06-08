@@ -1,11 +1,144 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>我的GitHub网站</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>极速点击挑战</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background: #1a1a2e;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #00f5d4;
+        }
+
+        .score {
+            font-size: 20px;
+            margin: 15px 0;
+            color: #ffdd57;
+        }
+
+        #gameBox {
+            width: 100%;
+            aspect-ratio: 1/1;
+            background: #16213e;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.2);
+            cursor: pointer;
+        }
+
+        #block {
+            width: 80px;
+            height: 80px;
+            background: #e94560;
+            border-radius: 12px;
+            position: absolute;
+            transition: 0.1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            font-size: 16px;
+            background: #00f5d4;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .tips {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello, GitHub Pages!</h1>
-    <p>这是我的免费静态网站。</p>
+    <div class="container">
+        <h1>极速点击挑战</h1>
+        <div class="score">分数: <span id="score">0</span></div>
+        <div id="gameBox">
+            <div id="block">点我</div>
+        </div>
+        <button class="btn" onclick="restart()">重新开始</button>
+        <div class="tips">点击红色方块得分 • 越点越快</div>
+    </div>
+
+    <script>
+        let score = 0;
+        const box = document.getElementById('gameBox');
+        const block = document.getElementById('block');
+        const scoreText = document.getElementById('score');
+
+        // 随机位置 + 随机颜色
+        function randomPos() {
+            const maxX = box.clientWidth - block.offsetWidth;
+            const maxY = box.clientHeight - block.offsetHeight;
+            const x = Math.random() * maxX;
+            const y = Math.random() * maxY;
+
+            // 随机亮色
+            const colors = ['#e94560', '#ff2e63', '#f6416c', '#ff5e7d', '#fc5185'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+
+            block.style.left = x + 'px';
+            block.style.top = y + 'px';
+            block.style.background = color;
+
+            // 分数增加
+            score++;
+            scoreText.textContent = score;
+        }
+
+        // 点击方块触发
+        block.addEventListener('click', randomPos);
+
+        // 重新开始
+        function restart() {
+            score = 0;
+            scoreText.textContent = 0;
+            randomPos();
+        }
+
+        // 初始化
+        window.onload = randomPos;
+    </script>
 </body>
 </html>
